@@ -1,35 +1,79 @@
 <template>
-	<div class="name">{{ name }}</div>
-	<input type="text" v-bind:value="name" />
-	<button class="btn btn-primary" v-on:click="updateName">Click</button>
+	<div class="container">
+		<h2>To-Do List</h2>
+		<h4>{{ count }}</h4>
+		<h4>{{ doubleCount }}</h4>
+		<h4>{{ doubleCountMethod() }}</h4>
+		<button @click="count++">Add</button>
+		<TodoSimpleForm @add-todo="addTodo" />
+
+		<span v-if="!todos.length">추가된 Todo가 없습니다.</span>
+	</div>
+	<TodoList
+		:todos="todos"
+		@toggle-todo="toggleTodo"
+		@delete-todo="deleteTodo"
+	></TodoList>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import TodoSimpleForm from './components/TodoSimpleForm.vue';
+import TodoList from './components/TodoList.vue';
 
 export default {
+	components: {
+		TodoSimpleForm,
+		TodoList,
+	},
 	setup() {
-		const name = ref('minsoftk');
+		const todos = ref([]);
+		const todoStyle = {
+			textDecoration: 'line-through',
+			color: 'gray',
+		};
 
-		const updateName = () => {
-			name.value = 'minHard!!';
+		const addTodo = (todo) => {
+			todos.value.push(todo);
+			console.log(todos.value);
+		};
+		const toggleTodo = (idx) => {
+			todos.value[idx].completed = !todos.value[idx].completed;
+		};
+
+		const deleteTodo = (idx) => {
+			todos.value.splice(idx, 1);
+		};
+
+		const count = ref(1);
+		const doubleCount = computed(() => {
+			return count.value * 2;
+		});
+
+		const doubleCountMethod = () => {
+			return count.value * 2;
 		};
 
 		return {
-			name,
-			updateName,
+			todos,
+			todoStyle,
+			addTodo,
+			toggleTodo,
+			deleteTodo,
+			count,
+			doubleCount,
+			doubleCountMethod,
 		};
 	},
 };
 </script>
 
 <style>
-#app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
-	margin-top: 60px;
+.name {
+	color: red;
+}
+.todo {
+	text-decoration: line-through;
+	color: gray;
 }
 </style>
