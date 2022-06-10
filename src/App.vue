@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect, watch } from 'vue';
 import TodoSimpleForm from './components/TodoSimpleForm.vue';
 import TodoList from './components/TodoList.vue';
 import axios from 'axios';
@@ -70,6 +70,20 @@ export default {
 			textDecoration: 'line-through',
 			color: 'gray',
 		};
+
+		// React의 useEffect와 유사하다. watchEffect안에 reactive 상태가 있다면
+		// 계속 실행된다.
+		watchEffect(() => {
+			console.log(currentPage.value);
+		});
+
+		// watch 같은 경우 하나를 지켜보는 경우, 여러가지를 지켜보는 경우가 있다.
+		// reactive인 경우에 ()=> val 형식을 첫번째 인자에 넣어준다.
+		// 객체이기 때문에 1개 이상을 watch 할 경우 ()=> [a.b, a.c] 와 같이 써준다.
+		// ref 상태의 경우도 [currentPage, numberOfTodos] 와 같이 넣어줄 수 있다.
+		watch(currentPage, (currentPage, prev) => {
+			console.log(currentPage, prev);
+		});
 
 		const getTodos = async (page = currentPage.value) => {
 			currentPage.value = page;
