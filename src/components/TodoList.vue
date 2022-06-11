@@ -1,6 +1,7 @@
 <template>
 	<div v-for="(todo, index) in todos" :key="todo.id" class="card mt-2">
 		<div
+			style="cursor: pointer"
 			@click="moveToPage(todo.id)"
 			class="card-body p-2 d-flex align-items-center"
 		>
@@ -10,7 +11,7 @@
 					class="form-check-input"
 					type="checkbox"
 					:value="todo.completed"
-					@change="toggleTodo(index)"
+					@click.stop="toggleTodo(index, $event)"
 				/>
 				<label
 					:style="todo.completed ? todoStyle : ''"
@@ -23,7 +24,7 @@
 				</label>
 			</div>
 			<div>
-				<button @click="deleteTodo(index)" class="btn btn-danger btn-sm">
+				<button @click.stop="deleteTodo(index)" class="btn btn-danger btn-sm">
 					Delete
 				</button>
 			</div>
@@ -45,8 +46,8 @@ export default {
 	emits: ['toggle-todo', 'delete-todo'],
 	setup(props, { emit }) {
 		const router = useRouter();
-		const toggleTodo = (index) => {
-			emit('toggle-todo', index);
+		const toggleTodo = (index, e) => {
+			emit('toggle-todo', index, e.target.checked);
 		};
 
 		const deleteTodo = (index) => {

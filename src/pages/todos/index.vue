@@ -125,11 +125,14 @@ export default {
 			}
 		};
 
-		const toggleTodo = async (idx) => {
+		const toggleTodo = async (idx, checked) => {
+			console.log(checked);
+
 			const id = todos.value[idx].id;
 			try {
 				await axios.patch('http://localhost:3000/todos/' + id, {
-					completed: !todos.value[idx].completed,
+					// completed: !todos.value[idx].completed,
+					completed: checked,
 				});
 
 				getTodos(1);

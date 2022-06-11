@@ -8,7 +8,9 @@
 			</li>
 		</ul>
 	</nav>
-	<router-view />
+	<div class="container">
+		<router-view />
+	</div>
 </template>
 
 <script>
