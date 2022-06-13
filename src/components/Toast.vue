@@ -24,5 +24,24 @@ export default {
 	position: fixed;
 	top: 10px;
 	right: 10px;
+	transition: all 3s ease;
+	animation: toast 3s ease;
+}
+
+@keyframes toast {
+	0% {
+		opacity: 0;
+		transform: translateY(-30px);
+	}
+	50% {
+		opacity: 1;
+		transform: translateY(0px);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-30px);
+	}
+}
+.toast-box {
 }
 </style>

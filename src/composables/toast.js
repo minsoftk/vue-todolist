@@ -16,7 +16,7 @@ export const useToast = () => {
 			showToast.value = false;
 			toastAlertType.value = '';
 			toastMessage.value = '';
-		}, 7000);
+		}, 3000);
 
 		onUnmounted(() => {
 			clearTimeout(toastTimeout.value);

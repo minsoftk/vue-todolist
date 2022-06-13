@@ -90,9 +90,10 @@ export default {
 		const SUCCESS = 'success';
 		const DANGER = 'danger';
 
+		// Modal control
+
 		const router = useRouter();
 		console.log('🚀 ~ file: index.vue ~ line 94 ~ setup ~ router', router);
-
 		// React의 useEffect와 유사하다. watchEffect안에 reactive 상태가 있다면
 		// 계속 실행된다.
 		watchEffect(() => {
