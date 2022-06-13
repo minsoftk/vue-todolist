@@ -1,15 +1,20 @@
 <template>
 	<router-view />
 	<div class="container">
-		<h2>To-Do List</h2>
+		<div class="d-flex justify-content-between mb-3">
+			<h2>To-Do List</h2>
+			<button class="btn btn-primary" @click="moveToCreatePage">
+				create todo
+			</button>
+		</div>
 		<input
-			class="form-control"
+			class="form-control mb-3"
 			type="text"
 			v-model="searchText"
 			placeholder="Search"
 			@keyup.enter="searchTodo"
 		/>
-		<TodoSimpleForm @add-todo="addTodo" />
+
 		<div style="color: red">{{ error }}</div>
 		<span v-if="!todos.length">추가된 Todo가 없습니다.</span>
 	</div>
@@ -49,16 +54,14 @@
 
 <script>
 import { ref, computed, watchEffect, watch } from 'vue';
-import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
 import TodoList from '@/components/TodoList.vue';
 import axios from 'axios';
 import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
-import { trigger } from '@vue/reactivity';
+import { useRouter } from 'vue-router';
 
 export default {
 	components: {
-		TodoSimpleForm,
 		TodoList,
 		Toast,
 	},
@@ -86,6 +89,9 @@ export default {
 		//Toast
 		const SUCCESS = 'success';
 		const DANGER = 'danger';
+
+		const router = useRouter();
+		console.log('🚀 ~ file: index.vue ~ line 94 ~ setup ~ router', router);
 
 		// React의 useEffect와 유사하다. watchEffect안에 reactive 상태가 있다면
 		// 계속 실행된다.
@@ -209,6 +215,14 @@ export default {
 			getTodos(1);
 		};
 
+		//새로운 add page 생성
+		//moveToCreatePage
+		const moveToCreatePage = () => {
+			router.push({
+				name: 'TodoCreate',
+			});
+		};
+
 		return {
 			todos,
 			todoStyle,
@@ -233,6 +247,9 @@ export default {
 			SUCCESS,
 			DANGER,
 			triggerToast,
+
+			// 새로운 add page 생성
+			moveToCreatePage,
 		};
 	},
 };

@@ -1,7 +1,6 @@
 <template>
-	<h1>Todo page</h1>
-	<TodoForm :editing="true" />
-	<!-- <Toast /> -->
+	<h1>create Page</h1>
+	<TodoForm />
 </template>
 
 <script>
