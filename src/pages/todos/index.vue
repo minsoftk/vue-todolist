@@ -42,6 +42,7 @@
 			</li>
 		</ul>
 	</nav>
+	<Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
 	{{ numberOfPages }}
 	{{ numberOfTodos }}
 </template>
@@ -51,11 +52,15 @@ import { ref, computed, watchEffect, watch } from 'vue';
 import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
 import TodoList from '@/components/TodoList.vue';
 import axios from 'axios';
+import Toast from '@/components/Toast.vue';
+import { useToast } from '@/composables/toast';
+import { trigger } from '@vue/reactivity';
 
 export default {
 	components: {
 		TodoSimpleForm,
 		TodoList,
+		Toast,
 	},
 	setup() {
 		// 할일 목록 관리
@@ -78,6 +83,10 @@ export default {
 		// 검색
 		const searchText = ref('');
 
+		//Toast
+		const SUCCESS = 'success';
+		const DANGER = 'danger';
+
 		// React의 useEffect와 유사하다. watchEffect안에 reactive 상태가 있다면
 		// 계속 실행된다.
 		watchEffect(() => {
@@ -92,6 +101,10 @@ export default {
 			console.log(currentPage, prev);
 		});
 
+		//Toast Box - useToast
+		const { toastMessage, toastAlertType, showToast, triggerToast } =
+			useToast();
+
 		// Todo 메소드
 		const getTodos = async (page = currentPage.value) => {
 			currentPage.value = page;
@@ -105,6 +118,7 @@ export default {
 			} catch (err) {
 				console.log(err);
 				error.value = 'something went wrong.';
+				triggerToast('something went wrong.', DANGER);
 			}
 		};
 
@@ -152,6 +166,7 @@ export default {
 			} catch (err) {
 				console.log(err);
 				error.value = 'Something went wrongs.';
+				triggerToast('Something went wrongs.', DANGER);
 			}
 		};
 
@@ -210,6 +225,14 @@ export default {
 			currentPage,
 			getTodos,
 			searchTodo,
+
+			//Toast
+			showToast,
+			toastMessage,
+			toastAlertType,
+			SUCCESS,
+			DANGER,
+			triggerToast,
 		};
 	},
 };

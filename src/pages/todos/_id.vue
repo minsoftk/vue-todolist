@@ -50,6 +50,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
+import { useToast } from '@/composables/toast';
 
 export default {
 	components: {
@@ -64,11 +65,11 @@ export default {
 		const loading = ref(true);
 		const todoId = route.params.id;
 
-		const showToast = ref(false);
-		const toastMessage = ref('');
-		const toastAlertType = ref('');
 		const SUCCESS = 'success';
 		const DANGER = 'danger';
+
+		// 컴포넌트가 unmount 됐을 때 settimeout함수가 계속 실행이 된다. 이때 언마운트 메소드에 clearTimeout을 해줘서 clean-up을 해준다.
+
 		const getTodo = async () => {
 			try {
 				const res = await axios.get(`http://localhost:3000/todos/${todoId}`);
@@ -91,17 +92,8 @@ export default {
 			});
 		};
 
-		const triggerToast = (message, type = SUCCESS) => {
-			showToast.value = true;
-			toastMessage.value = message;
-			toastAlertType.value = type;
-
-			setTimeout(() => {
-				showToast.value = false;
-				toastAlertType.value = '';
-				toastMessage.value = '';
-			}, 3000);
-		};
+		const { toastMessage, toastAlertType, showToast, triggerToast } =
+			useToast();
 
 		const onSave = async () => {
 			try {
