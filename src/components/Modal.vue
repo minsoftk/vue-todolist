@@ -3,19 +3,21 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Delete Todo</h5>
+					<h5 class="modal-title" id="exampleModalLabel">
+						<!-- slot의 사용이유? -->
+						<!-- 재사용될 때 바뀔 때마다 -->
+						<!-- v-on: => @ -->
+						<!-- v-bind: => : -->
+						<!-- v-slot: => # -->
+						<slot name="title"></slot>
+					</h5>
 					<button type="button" class="close" aria-label="Close">
 						<span @click="onClose">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body">Are you sure want to delete the todo?</div>
+				<div class="modal-body"><slot name="body"></slot></div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" @click="onClose">
-						Close
-					</button>
-					<button type="button" class="btn btn-danger" @click="onDelete">
-						Delete
-					</button>
+					<slot name="footer"></slot>
 				</div>
 			</div>
 		</div>
@@ -24,19 +26,14 @@
 
 <script>
 export default {
-	emits: ['close-modal', 'delete-todo'],
+	emits: ['close-modal'],
 	setup(props, { emit }) {
 		const onClose = () => {
 			emit('close-modal');
 		};
 
-		const onDelete = () => {
-			emit('delete-todo');
-		};
-
 		return {
 			onClose,
-			onDelete,
 		};
 	},
 };
