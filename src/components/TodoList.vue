@@ -30,7 +30,13 @@
 			</div>
 		</div>
 	</div>
-	<Modal v-if="showModal" @close-modal="closeModal" @delete-todo="deleteTodo" />
+	<teleport to="#modal">
+		<Modal
+			v-if="showModal"
+			@close-modal="closeModal"
+			@delete-todo="deleteTodo"
+		/>
+	</teleport>
 </template>
 
 <script>
