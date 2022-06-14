@@ -30,7 +30,7 @@
 			</div>
 		</div>
 	</div>
-	<Modal v-if="showModal" />
+	<Modal v-if="showModal" @close-modal="closeModal" @delete-todo="deleteTodo" />
 </template>
 
 <script>
@@ -65,8 +65,10 @@ export default {
 			showModal.value = true;
 		};
 
-		const deleteTodo = (index) => {
-			emit('delete-todo', index);
+		const deleteTodo = () => {
+			emit('delete-todo', todoDeletedId.value);
+			todoDeletedId.value = null;
+			showModal.value = false;
 		};
 
 		const moveToPage = (todoId) => {
@@ -79,7 +81,19 @@ export default {
 			});
 		};
 
-		return { toggleTodo, deleteTodo, moveToPage, showModal, openModal };
+		const closeModal = () => {
+			todoDeletedId.value = null;
+			showModal.value = false;
+		};
+
+		return {
+			toggleTodo,
+			deleteTodo,
+			moveToPage,
+			showModal,
+			openModal,
+			closeModal,
+		};
 	},
 };
 </script>

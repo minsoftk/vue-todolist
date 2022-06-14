@@ -163,12 +163,11 @@ export default {
 			}
 		};
 
-		const deleteTodo = async (idx) => {
+		const deleteTodo = async (id) => {
 			error.value = '';
-			const id = todos.value[idx].id;
+
 			try {
 				await axios.delete('http://localhost:3000/todos/' + id);
-
 				getTodos(1);
 			} catch (err) {
 				console.log(err);

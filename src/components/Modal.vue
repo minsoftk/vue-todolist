@@ -3,22 +3,19 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-					<button
-						type="button"
-						class="close"
-						data-dismiss="modal"
-						aria-label="Close"
-					>
+					<h5 class="modal-title" id="exampleModalLabel">Delete Todo</h5>
+					<button type="button" class="close" aria-label="Close">
 						<span @click="onClose">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body">...</div>
+				<div class="modal-body">Are you sure want to delete the todo?</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" @click="onClose">
 						Close
 					</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="button" class="btn btn-danger" @click="onDelete">
+						Delete
+					</button>
 				</div>
 			</div>
 		</div>
@@ -27,10 +24,19 @@
 
 <script>
 export default {
+	emits: ['close-modal', 'delete-todo'],
 	setup(props, { emit }) {
 		const onClose = () => {
-			emit('close');
-			return onClose;
+			emit('close-modal');
+		};
+
+		const onDelete = () => {
+			emit('delete-todo');
+		};
+
+		return {
+			onClose,
+			onDelete,
 		};
 	},
 };
